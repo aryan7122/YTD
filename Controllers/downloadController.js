@@ -4,13 +4,21 @@ const downloadController = async (req, res) => {
     try {
         const url = req.query.url;
 
-        // Validate URL (if needed)
         if (!url || typeof url !== 'string') {
             return res.status(400).json({ error: 'Invalid URL provided' });
         }
 
         const videoId = await ytdl.getURLVideoID(url);
-        const metaInfo = await ytdl.getInfo(url);
+
+        let metaInfo;
+        try {
+            metaInfo = await ytdl.getInfo(url);
+        } catch (error) {
+            if (error.name === 'MinigetError' && error.statusCode === 410) {
+                return res.status(404).json({ error: 'Requested video is no longer available' });
+            }
+            throw error; // Rethrow other errors
+        }
 
         const data = {
             url: 'https://www.youtube.com/embed/' + videoId,
