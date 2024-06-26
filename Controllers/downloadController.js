@@ -12,7 +12,7 @@ const downloadController = async (req, res) => {
         return res.send(data);
     } catch (error) {
         console.error('Error occurred:', error);
-        return res.status(500).send('Error occurred while downloading');
+        return res.status(500).send('Error occurred while downloading: ' + error.message);
     }
 };
 
