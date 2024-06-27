@@ -1,16 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 
+// const downloadYT = require('./Controllers/downloadYT');
 const downloadController = require('./Controllers/downloadController');
 
 const app = express();
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send('Welcome to the YTD');
 });
 
+// app.get('/download', downloadYT);
 app.get('/download', downloadController);
 
 app.listen(4000, () => {
